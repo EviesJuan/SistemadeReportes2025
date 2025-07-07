@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Orden de Trabajo</title>
+  <link rel="stylesheet" href="styles4.css">
+</head>
+<body>
+  <script>
+    // Control de acceso
+    if (!localStorage.getItem("loggedIn4")) {
+      window.location.href = "login4.html";
+    }
+  </script>
+
+  <div class="page-container">
+    <header>
+      <h1>ORDEN DE TRABAJO</h1>
+      <img id="img-header" src="imagen/htl16.PNG" style="display:none;" />
+    </header>
+
+          <div style="grid-column: span 2;">
+        <label>Asignado Por:</label>
+        <input type="text" id="AsignadoPor" />
+      </div>
+
+
+    </section>
+    <div class="row">
+        <label for="lugar">Lugar:</label>
+        <select id="lugar" name="lugar" required>
+          <option value="">Selecciona un lugar</option>
+          <option value="Acarigua I 115 KV">ACARIGUA I 115 KV</option>
+          <option value="Acarigua II NUEVA">ACARIGUA II NUEVA</option>
+          <option value="Acarigua II VIEJA">ACARIGUA II VIEJA</option>
+          <option value="Araure">ARAURE</option>
+          <option value="Turen">TUREN</option>
+          <option value="Turen II">TUREN II</option>
+          <option value="Guanare">GUANARE</option>
+          <option value="Las Flores">LAS FLORES</option>
+          <option value="Ospino">OSPINO</option>
+          <option value="San Rafael">SAN RAFAEL</option>
+          <option value="Biscucuy">BISCUCUY</option>
+          <option value="Playon 230 KV">PLAYON 230 KV</option>
+        </select>
+      </div>
+
+        <div class="row">
+        <label for="claseEquipo">Clases de Equipo:</label>
+        <select id="claseEquipo" name="claseEquipo" required>
+          <option value="">Selecciona una clase de equipo</option>
+        </select>
+      </div>
+
+       <div class="row">
+        <label for="equipo">Equipos:</label>
+        <select id="equipo" name="equipo" required>
+          <option value="">Selecciona un equipo</option>
+        </select>
+      </div>
+
+    <!-- Sección 1: Fecha / OTNo / Consignación (3x1) -->
+    <section class="section-box">
+      <h2>Datos General</h2>
+
+       <div style="grid-column: span 2;">
+        <label>Asignado a:</label>
+        <input type="text" id="AsignadoPara" />
+      </div>
+      
+
+      <div class="row">
+        <label>Trabajo(s) a realizar: <input type="text" id="trabajoRealizar" name="trabajoRealizar"></label>
+      </div>
+
+
+    <section class="section-box">
+      <h2>Detalle de Trabajo</h2>
+      <label>Trabajo(s) realizado(s):</label>
+      <textarea id="trabajoRealizado" name="trabajoRealizado"></textarea>
+      <label>Trabajo(s) pendiente(s) por realizar:</label>
+      <textarea id="trabajoPendiente" name="trabajoPendiente"></textarea>
+    </section>
+
+    <section class="section-box">
+      <h2>Recursos</h2>
+      <div class="row">
+        <label>Vehículo(s) utilizado(s): <input type="text" id="vehiculosUtilizados" name="vehiculosUtilizados"></label>
+        <label># de Personal: <input type="text" id="personalNumero" name="personalNumero"></label>
+        <label>Tiempo de Jornada: <input type="text" id="tiempoJornada" name="tiempoJornada"></label>
+      </div>
+      <div class="row">
+        <label>Nombre y Apellido: <input type="text" id="nombres" name="nombres"></label>
+        <label>Inicio: <input type="text" id="inicio" name="inicio"></label>
+        <label>Fin: <input type="text" id="fin" name="fin"></label>
+      </div>
+    </section>
+
+    <section class="section-box">
+      <h2>Caporal / Permiso / Supervisión</h2>
+      <div class="row">
+        <label>Caporal: <input type="text" id="caporal" name="caporal"></label>
+        <label>Permiso de Trabajo: <input type="text" id="permiso" name="permiso"></label>
+        <label>Supervisión Inmediata: <input type="text" id="supervision" name="supervision"></label>
+      </div>
+    </section>
+
+    <section class="section-box">
+      <h2>Observaciones</h2>
+      <textarea id="observaciones" name="observaciones"></textarea>
+    </section>
+
+    <footer>
+      <img id="img-footer" src="imagen/imagen3.PNG" style="display:none;" />
+      <button id="generate-pdf">Generar PDF</button>
+      <button id="logoutBtn">Cerrar sesión</button>
+    </footer>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="script4.js"></script>
+
+  <script>
+    // Botón de cerrar sesión
+    document.getElementById("logoutBtn").addEventListener("click", function () {
+      localStorage.removeItem("loggedIn4");
+      window.location.href = "login4.html";
+    });
+  </script>
+  <script>
+  // Datos por lugar, clase de equipo y equipo
+  const equiposPorLugar = {
+    "Acarigua I 115 KV": {
+      "TRANSFORMADOR DE SERVICIOS AUXILIARES": [
+        "TSA1 DE 13.8/0.220 KV : TRANSFORMADOR DE SERVICIOS AUXILIARES DE 13.8/0.220 KV",
+        "TSA2 DE 13.8/0.220 KV : TRANSFORMADOR DE SERVICIOS AUXILIARES DE 13.8/0.220 KV",
+        "TSA DE 13.8/0.480 KV : TRANSFORMADOR DE SERVICIOS AUXILIARES DE 13.8/0.480 KV"
+      ],
+      "TRANSFORMADOR DE POTENCIA": [
+        "TR1 DE 115/13.8 KV : TRANSFORMADOR 1 DE 115/13.8 KV",
+        "TR2 DE 115/13.8 KV : TRANSFORMADOR 2 DE 115/13.8 KV",
+        "TR3 DE 115/34.5 KV : TRANSFORMADOR 3 DE 115/34.5 KV",
+        "TR4 DE 115/34.5 KV : TRANSFORMADOR 4 DE 115/34.5 KV"
+      ],
+      "SISTEMA DE COMUNICACIONES": [
+        "SC : SISTEMA DE COMUNICACIONES",
+        "SC : SISTEMA DE COMUNICACIONES"
+      ],
+      "SERVICIOS AUXILIARES C.C": [
+        "SACC: SERVICIOS AUXILIARES DE CORRIENTE CONTINUA"
+      ],
+      "SERVICIOS AUXILIARES C.A": [
+        "SACA: SERVICIOS AUXILIARES DE CORRIENTE ALTERNA"
+      ],
+      "PATIO": [
+        "PT DE 115 KV : PATIO DE 115 KV"
+      ],
+      "LINEA DE TRANSMISION": [
+        "LN ACA1 - OSPN DE 115 KV: LINEA DE ACARIGUA I - OSPINO DE 115 KV",
+        "LN ACA2 - ACA1 1 DE 115 KV : LINEA DE ACARIGUA II VIEJA - ACARIGUA I 1 DE 115 KV",
+        "LN ACA2 - ACA1 2 DE 115 KV : LINEA DE ACARIGUA II NUEVA - ACARIGUA I 2 DE 115 KV",
+        "LN CAB-ACA DE 115 KV: LINEA DE CABUDARE - ACARIGUA I DE 115 KV",
+        "LN CBDR - ACA1 DE 115 KV : LINEA DE CABUDARE - ACARIGUA 1 DE 115 KV"
+      ],
+      "BANCO DE CONDENSADORES": [
+        ""
+      ],
+      "CASA DE MANDO": [
+        "CM : CASA DE MANDO"
+      ],
+      "BARRA": [
+        "BP DE 115 KV : BARRA PRINCIPAL DE 115 KV",
+        "BPI DE 13.8 KV: BARRA PRINCIPAL 1 DE 13.8 KV",
+        "BPI DE 34.5 KV : BARRA PRINCIPAL 1 DE 34.5 KV",
+        "BPII DE 13.8 KV : BARRA PRINCIPAL 2 DE 13.8 KV",
+        "BPII DE 34.5 KV : BARRA PRINCIPAL 2 DE 34.5 KV",
+        "BT DE 34.5 KV : BARRA DE TRANSFERENCIA DE 34.5 KV"
+      ],
+      "INTERRUPTOR": [
+        "INT B130 : INTERRUPTOR B130",
+        "INT B380 : INTERRUPTOR B380",
+        "INT B480 : INTERRUPTOR B480",
+        "INT D120 : INTERRUPTOR D120",
+        "INT D150 : INTERRUPTOR D150",
+        "INT D180 : INTERRUPTOR D180",
+        "INT D250 : INTERRUPTOR D250",
+        "INT D280 : INTERRUPTOR D280",
+        "INT H105 : INTERRUPTOR H105",
+        "INT H110 : INTERRUPTOR H110",
+        "INT H130 : INTERRUPTOR H130",
+        "INT H205 : INTERRUPTOR H205",
+        "INT H210 : INTERRUPTOR H210",
+        "INT H305 : INTERRUPTOR H305",
+        "INT H310 : INTERRUPTOR H310",
+        "INT H405 : INTERRUPTOR H405",
+        "INT H410 : INTERRUPTOR H410"
+      ]
+    },
+    "Acarigua II NUEVA": {
+      "AUTOTRANSFORMADOR": [
+        "AT1 DE 230/115 KV : AUTOTRANSFORMADOR 1 DE 230/115 KV",
+        "AT2 DE 230/115 KV : AUTOTRANSFORMADOR 2 DE 230/115 KV",
+        "AT3 DE 230/115 KV : AUTOTRANSFORMADOR 3 DE 230/115 KV",
+        "AT4 DE 230/115 KV : AUTOTRANSFORMADOR 4 DE 230/115 KV"
+      ],
+      "BARRA": [
+        "BPI DE 230 KV : BARRA PRINCIPAL I DE 230 KV",
+        "BPII DE 230 KV : BARRA PRINCIPAL II DE 230 KV",
+        "BP SI DE 115 KV : BARRA PRINCIPAL SECCION I DE 115 KV",
+        "BP SII DE 115 KV : BARRA PRINCIPAL SECCION 2 DE 115 KV",
+        "BT DE 115 KV : BARRA DE TRANSFERENCIA DE 115 KV",
+        "BT DE 230 KV : BARRA DE TRANSFERENCIA DE 230 KV"
+      ],
+      "GENERDOR DIESEL": [
+        "GD : GENERADOR DIESEL"
+      ],
+      "INTERRUPTOR": [
+        "INT H105 : INTERRUPTOR H105",
+        "INT H120 : INTERRUPTOR H120",
+        "INT H180 : INTERRUPTOR H180",
+        "INT H205 : INTERRUPTOR H205",
+        "INT H220 : INTERRUPTOR H220",
+        "INT H230 : INTERRUPTOR H230",
+        "INT H280 : INTERRUPTOR H280",
+        "INT H380 : INTERRUPTOR H380",
+        "INT H405 : INTERRUPTOR H405",
+        "INT M105 : INTERRUPTOR H105",
+        "INT M110 : INTERRUPTOR M110",
+        "INT M120 : INTERRUPTOR M120",
+        "INT M130 : INTERRUPTOR M130",
+        "INT M205 : INTERRUPTOR M205",
+        "INT M210 : INTERRUPTOR M210",
+        "INT M305 : INTERRUPTOR M305",
+        "INT M310 : INTERRUPTOR M310",
+        "INT M405 : INTERRUPTOR M405"
+      ],
+      "LINEA DE TRANSMISION": [
+        "LN ACA2 - ACA1 2 DE 115 KV : LINEA DE ACARIGUA II NUEVA - ACARIGUA I 2 DE 115 KV",
+        "LN ACA2 - ARAU DE 115 KV : LINEA DE ACARIGUA II - ARAURE DE 115 KV",
+        "LN ACA2 - BRN4 DE 230 KV : LINEA DE ACARIGUA II - BARNINAS IV DE 230 KV",
+        "LN ACA2 - FLRS DE 230 KV : LINEA DE ACARIGUA II - LAS FLORES DE 230 KV",
+        "LN YRCY - ACA2 1 DE 230 KV : LINEA YARACUY - ACARIGUA II 1 DE 230 KV",
+        "LN YRCY - ACA2 2 DE 230 KV : LINEA YARACUY - ACARIGUA II 2 DE 230 KV"
+      ],
+      "PATIO": [
+        "PT : DE 115 KV : PATIO DE 115 KV",
+        "PT DE 230 KV : PATIO DE 230 KV"
+      ],
+      "SERVICIOS AUXILIARES C.A": [
+        "SACA : SERVICIOS AUXILIARES DE CORRIENTE ALTERNA"
+      ],
+      "SERVICIOS AUXILIARES C.C": [
+        "SACC : SERVICIOS AUXILIARES DE CORRIENTE CONTINUA"
+      ],
+      "SISTEMA DE COMUNICACIONES": [
+        "SC : SISTEMA DE COMUNICACIONES"
+      ],
+      "TRANSFORMADOR DE SERVICIOS AUXILIARES": [
+        "TSA1 DE 13.8/0.220 KV : TRANSFORMADOR DE SERVICIOS AUXILIARES DE 13.8/0.22-0.11 KV",
+        "TSA2 DE 13.8/0.220 KV : TRANSFORMADOR DE SERVICIOS AUXILIARES DE 13.8/0.22-0.11 KV",
+        "TSA2 DE 13.8/0.480 KV : TRANSFORMADOR DE SERVICIOS AUXILIARES DE 13.8/0.480 KV"
+      ],
+      "CASA DE MANDO": [
+        ""
+      ]
+    },
+    "Acarigua II VIEJA": {
+      "BARRA": [
+        ""
+      ],
+      "CASA DE MANDO": [
+        "CM : CASA DE MANDO"
+      ],
+      "GENERADOR DIESEL": [
+        "GD : GENERADOR DE DIESEL"
+      ],
+      "INTERRUPTOR": [
+        "INT D120 : INTERRUPTOR D120",
+        "INT D180 : INTERRUPTOR D180",
+        "INT D280 : INTERRUPTOR D280",
+        "INT H105 : INTERRUPTOR H105",
+        "INT H110 : INTERRUPTOR H110",
+        "INT H130 : INTERRUPTOR H130",
+        "INT H305 : INTERRUPTOR H305",
+        "INT H405 : INTERRUPTOR H405"
+      ],
+      "LINEA DE TRANSMISION": [
+        "LN ACA2 - ACA1 1 DE 115 KV : LINEA DE ACARIGUA II VIEJA - ACARIGUA I 1 DE 115 KV",
+        "LN ACA2 - SRNT DE 115 KV : LINEA DE ACARIGUA II - SAN RAFAEL DE ONOTO DE 115 KV",
+        "LN ACA2 - TUR2 DE 115 KV : LINEA DE ACARIGUA II - TUREN II DE 115 KV",
+        "LN ACA2 - YRTG DE 115 KV : LINEA DE 115 KV ACARIGUA II - YARITAGUA DE 115 KV",
+        "LN CJDS - ACA2 DE 115 KV : LINEA DE COJEDES - ACARIGUA II DE 115 KV"
+      ],
+      "PATIO": [
+        "PT DE 115 KV : PATIO DE 115 KV"
+      ],
+      "SERVICIOS AUXILIARES C.A": [
+        "SACA : SERVICIOS AUXILIARES DE CORRIENTE ALTERNO"
+      ],
+      "SERIVICOS AUXILIARES C.C": [
+        "SACC : SERVICIOS AUXILIARES DE CORRIENTE CONTINUA"
+      ],
+      "SISTEMAS DE COMUNICACIONES": [
+        "SC : SISTEMA DE COMUNICACIONES"
+      ],
+      "TRANSFORMADOR DE POTENCIA": [
+        "TR2 DE 115/13.8 KV : TRANSFORMADOR 2 DE 115/13.8 KV",
+        "TRF1 DE 115/13.8 KV : TRANSFORMADOR 1 DE 115/13.8 KV"
+      ],
+      "TRANSFORMADOR DE SERVICIOS AUXILIARES": [
+        "TSA 1 DE 13.8/0.440 KV : TRANSFORMADOR DE SERVICIOS AUXILIARES 1 DE 13.8/0.440 KV",
+        "TSA DE 13.8/0.440 KV : TRANSFORMADOR DE SERVICIOS AUXILIARES DE 13.8/0.440 KV"
+      ]
+    },
+    "Araure": {
+      "TRANSFORMADOR DE SERVICIOS AUXILIARES": [
+        "TSA1 DE 13.8/0.220 KV : TRANSFORMADOR DE SERVICIOS DE SERVICIOS AUXILIARES DE 13.8/0.220/0.110 KV",
+        "TSA2 DE 13.8/0.220 KV : TRANSFORMADOR DE SERVICIOS AUXILIARES DE 13.8/0.220/0.110 KV"
+      ],
+      "INTERRUPTOR": [
+        ""
+      ],
+      "LINEA DE TRANSMISION": [
+        "LN ACA2 - ARAU DE 115 KV : LINEA DE ACARIGUA II - ARAURE DE 115 KV",
+        "LN ARAU - GNRE DE 115 KV : LINEA DE ARAURE - GUANARE DE 115 KV"
+      ],
+      "PATIO": [
+        "PT DE 115 KV : PATIO DE 115 KV"
+      ],
+      "SERVICIOS AUXILIARES C.A": [
+        "SACA : SERVICIOS AUXILIARES DE CORRIENTE ALTERNA"
+      ],
+      "SERVICIOS AUXILIARES C.C": [
+        "SACC : SERVICIOS AUXILIARES DE CORRIENTE CONTINUA"
+      ],
+      "SISTEMAS DE COMUNICACIONES": [
+        "SC : SISTEMA DE COMUNICACIONES"
+      ],
+      "TRANSFORMADOR DE POTENCIA": [
+        "TR2 DE 115/13.8 KV : TRANSFORMADOR 2 DE 115/13.8 KV",
+        "TRF1 DE 115/13.8 KV : TRANSFORMADOR 1 DE 115/13.8 KV"
+      ],
+      "TRANSFORMADOR DE SERVICIOS AUXILIARES": [
+        "TSA1 DE 13.8/0.220 KV : TRANSFORMADOR DE SERVICIOS AUXILIARES DE 13.8/0.220/0.110 KV",
+        "TSA2 DE 13.8/0.220 KV : TRANSFORMADOR DE SERVICIOS AUXILIARES DE 13.8/0.220/0.110 KV"
+      ]
+    },
+    "Las Flores": {
+      "AUTOTRANSFORMADOR": [
+        "AT2 DE 230/115 KV : AUTOTRANSFORMADOR 2 DE 230/115 KV"
+      ],
+      "BANCO DE COMPENSADORES": [
+        "BCOND 1 DE 6 MVAR : BANCO DE CONDENSADORES 1 DE 6 MVAR",
+        "BCOND 2 DE 6 MVAR : BANCO DE CONDENSADORES 2 DE 6 MVAR"
+      ],
+      "BARRA": [
+        "BAUX 1 DE 115 KV : BARRA AUXILIAR 1 DE 115 KV",
+        "BAUX 2 DE 115 KV : BARRA AUXILIAR 2 DE 115 KV",
+        "BP DE 115 KV : BARRA PRINCIPAL DE 115 KV",
+        "BP DE 230 KV : BARRA PRINCIPAL DE 230 KV",
+        "BP DE 34.5 KV : BARRA PRINCIPAL DE 34.5 KV",
+        "BPI DE 13.8 KV : BARRA PRINCIPAL DE 1 DE 13.8 KV",
+        "BPII DE 13.8 KV : BARRA PRINCIPAL 2 DE 13.8 KV",
+        "BT DE 115 KV : BARRA DE TRANSFERENCIA DE 115 KV",
+        "BT DE 230 KV : BARRA DE TRANSFERENCIA DE 230 KV"
+      ],
+      "CASA DE MANDO": [
+        ""
+      ],
+      "GENERADOR DIESEL": [
+        "GD : GENERADOR DE MANDO"
+      ],
+      "INTERRUPTOR": [
+        "INT B380 : INTERRUPTOR B380",
+        "INT D120 : INTERRUPTOR D120",
+        "INT D150A : INTERRUPTOR D150A",
+        "INT D180 : INTERRUPTOR D180",
+        "INT D250A : INTERRUPTOR D250A",
+        "INT D250B : INTERRUPTOR D250B",
+        "INT D280 : INTERRUPTOR D280",
+        "INT H105 : INTERRUPTOR H105",
+        "INT H110 : INTERRUPTOR H110",
+        "INT H130 : INTERRUPTOR H130",
+        "INT H205 : INTERRUPTOR H205",
+        "INT H210 : INTERRUPTOR H210",
+        "INT H280 : INTERRUPTOR H280",
+        "INT H305 : INTERRUPTOR H305",
+        "INT H405 : INTERRUPTOR H405",
+        "INT M105 : INTERRUPTOR M105",
+        "INT M130 : INTERRUPTOR M130",
+        "INT M205 : INTERRUPTOR M205",
+        "INT M210 : INTERRUPTOR M210"
+      ],
+      "LINEA DE TRANSMISION": [
+        "LN ACA2 - FLRS DE 230 KV : LINEA DE ACARIGUA II - LAS FLORES DE 230 KV",
+        "LN FLRS - BCCY 1 DE 115 KV : LINEA LAS FLORES - BISCUCUY 1 DE 115 KV",
+        "LN FLRS - BCCY 2 DE 115 KV : LINEA LAS FLORES - BISCUCUY 2 DE 115 KV",
+        "LN FLRS - BRN4 DE 230 KV : LINEA LAS FLORES - BARINAS IV DE 230 KV",
+        "LN FLRS - GNRE DE 115 KV : LINEA LAS FLORES - GUANARE DE 115 KV",
+        "LN FLRS - SPPR DE 115 KV : LINEA LAS FLORES - SIPORORO DE 115 KV"
+      ],
+      "PATIO": [
+        "PT DE 115 KV : PATIO DE 115 KV",
+        "PT DE 230 KV : PATIO DE 230 KV"
+      ],
+      "SERVICIOS AUXILIARES C.A": [
+        "SACA : SERVICIOS AUXILIARES DE CORRIENTE ALTERNA"
+      ],
+      "SERVICIOS AUXILIARES C.C": [
+        "SACC : SERVICIOS AUXILIARES DE CORRIENTE CONTINUA"
+      ],
+      "SISTEMAS DE COMUNICACIONES": [
+        "SC : SISTEMAS DE COMUNICACIONES"
+      ],
+      "TRANSFORMADOR DE POTENCIA": [
+        "TR2 DE 115/13.8 KV : TRANSFORMADOR 2 DE 115/13.8 KV",
+        "TR3 DE 115/34.5 KV : TRANSFORMADOR 3 DE 115/34.5 KV",
+        "TRF1 DE 115/13.8 KV : TRANSFORMADOR 1 DE 115/13.8 KV"
+      ],
+      "TRANSFORMADOR DE SERVICIOS AUXILIARES": [
+        "TSA DE 13.8/0.440 KV : TRANSFORMADOR DE SERVICIOS AUXILIARES DE 13.8/0.440 KV"
+      ]
+    },
+    
+  };
+
+ // Variables según IDs del HTML
+const lugarSelect = document.getElementById('lugar');
+const claseSelect = document.getElementById('claseEquipo');
+const equipoSelect = document.getElementById('equipo');
+
+// Evento para cambiar clases según lugar
+lugarSelect.addEventListener('change', () => {
+  const lugar = lugarSelect.value;
+  claseSelect.innerHTML = '<option value="">Selecciona una clase de equipo</option>';
+  equipoSelect.innerHTML = '<option value="">Selecciona un equipo</option>';
+
+  if (lugar && equiposPorLugar[lugar]) {
+    const clases = Object.keys(equiposPorLugar[lugar]);
+    clases.forEach(clase => {
+      claseSelect.innerHTML += `<option value="${clase}">${clase}</option>`;
+    });
+  }
+});
+
+// Evento para cambiar equipos según clase y lugar
+claseSelect.addEventListener('change', () => {
+  const lugar = lugarSelect.value;
+  const clase = claseSelect.value;
+  equipoSelect.innerHTML = '<option value="">Selecciona un equipo</option>';
+
+  if (lugar && clase && equiposPorLugar[lugar] && equiposPorLugar[lugar][clase]) {
+    const equipos = equiposPorLugar[lugar][clase];
+    equipos.forEach(equipo => {
+      equipoSelect.innerHTML += `<option value="${equipo}">${equipo}</option>`;
+    });
+  }
+});
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+

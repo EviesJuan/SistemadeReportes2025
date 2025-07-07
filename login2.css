@@ -1,0 +1,104 @@
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-image: url(imagen/imagen2.jpg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* Contenedor del login con efecto vidrio */
+.login-container {
+  background: rgba(255, 255, 255, 0.15); /* fondo semi-transparente */
+  backdrop-filter: blur(12px); /* efecto blur */
+  -webkit-backdrop-filter: blur(12px); /* soporte Safari */
+  border-radius: 20px; /* borde redondeado aumentado */
+  border: 1px solid rgba(255, 255, 255, 0.3); /* borde semitransparente */
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  padding: 30px 40px;
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.login-container h2 {
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 1.6rem;
+}
+
+form input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+form button {
+  width: 100%;
+  padding: 12px;
+  background-color: #2980b9;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+form button:hover {
+  background-color: #1c5980;
+}
+
+.error {
+  color: red;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+/* Diseño responsive */
+@media (max-width: 480px) {
+  .login-container {
+    padding: 25px 20px;
+    border-radius: 20px; /* mantenemos el borde redondeado */
+  }
+
+  .login-container h2 {
+    font-size: 1.4rem;
+  }
+
+  form input,
+  form button {
+    font-size: 15px;
+    padding: 10px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .login-container {
+    max-width: 500px;
+    padding: 35px 45px;
+    border-radius: 20px;
+  }
+
+  .login-container h2 {
+    font-size: 1.8rem;
+  }
+}
+
+
+

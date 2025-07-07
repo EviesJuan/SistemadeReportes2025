@@ -1,0 +1,127 @@
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #f1f5f9;
+  margin: 0;
+  padding: 0;
+  background-image: url(imagen/imagen2.jpg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+header, footer {
+  background-color: #1e3a8a;
+  color: white;
+  text-align: center;
+  padding: 1rem;
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+}
+
+form {
+  background: white;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 800px;
+}
+
+label {
+  display: block;
+  margin-top: 1rem;
+  font-weight: bold;
+  color: #1e293b;
+}
+
+input[type="text"],
+input[type="date"],
+textarea,
+select {
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 0.25rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 5px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.button-group button {
+  flex: 1 1 auto;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.button-group button:hover {
+  background-color: #1d4ed8;
+}
+
+footer p {
+  margin: 0.5rem 0 0;
+}
+
+/* RESPONSIVE MEJORADO */
+@media (max-width: 768px) {
+  body {
+    background-attachment: scroll;
+  }
+
+  main {
+    padding: 1rem;
+  }
+
+  form {
+    padding: 1rem;
+    width: 95%;
+    border-radius: 8px;
+  }
+
+  label {
+    font-size: 0.95rem;
+  }
+
+  input,
+  select,
+  textarea {
+    font-size: 0.9rem;
+    padding: 0.5rem;
+  }
+
+  .button-group {
+    flex-direction: column;
+  }
+
+  .button-group button {
+    width: 100%;
+    font-size: 1rem;
+    padding: 0.8rem;
+  }
+
+  header h1,
+  footer p {
+    font-size: 1rem;
+  }
+}
+
+
+  
+

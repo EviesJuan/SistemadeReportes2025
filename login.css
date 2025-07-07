@@ -1,0 +1,111 @@
+/* Estilo para el formulario de inicio de sesión */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-image: url(imagen/imagen2.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+/* Caja de login estilo vidrio */
+.login-container {
+    background-color: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    width: 320px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Título */
+.login-container h2 {
+    margin-bottom: 20px;
+    font-size: 26px;
+    color: #000000;
+    font-weight: 600;
+}
+
+/* Etiquetas */
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #000000;
+    font-weight: 500;
+    text-align: center;
+}
+
+/* Campos de entrada */
+input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 18px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 15px;
+    box-sizing: border-box;
+    outline: none;
+}
+
+/* Botón */
+button {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(to right, #1a2b49, #3c5e9c);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background: linear-gradient(to right, #3c5e9c, #1a2b49);
+    transform: scale(1.03);
+}
+
+/* Mensaje de error */
+.error-message {
+    color: #c0392b;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+/* ... Tu código actual permanece igual ... */
+
+/* Media queries para hacerlo responsive */
+@media (max-width: 480px) {
+    .login-container {
+        width: 90%;
+        padding: 20px;
+    }
+
+    .login-container h2 {
+        font-size: 22px;
+    }
+
+    label {
+        font-size: 13px;
+    }
+
+    input, button {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    button {
+        padding: 10px;
+    }
+}

@@ -1,0 +1,286 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+
+  background-image: url(imagen/imagen2.jpg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+#work-order {
+  width: 210mm;
+  min-height: 297mm;
+  margin: auto;
+  padding: 20mm;
+  padding-bottom: 100px; /* espacio para evitar solapamiento con el footer */
+  background: rgba(255, 255, 255, 0.75);
+  box-sizing: border-box;
+  position: relative;
+  border-radius: 12px;
+  backdrop-filter: blur(1px);
+}
+
+header {
+  border-bottom: 2px solid #007BFF;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header h2 {
+  margin: 0;
+  color: #041425;
+  font-size: 24px;
+}
+
+.fecha {
+  font-size: 14px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px 20px;
+  margin-bottom: 20px;
+}
+
+.form-grid > div {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-grid label {
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.form-grid input,
+.form-grid select,
+.form-grid textarea {
+  width: 100%;
+  padding: 6px 8px;
+  font-size: 14px;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+  box-sizing: border-box;
+  resize: vertical;
+}
+
+.form-grid textarea {
+  min-height: 60px;
+}
+
+/* Para campos que deben ocupar dos columnas */
+.form-grid > div[style*="grid-column: span 2;"] {
+  grid-column: span 2;
+}
+
+.section-tipo {
+  margin-top: 10px;
+}
+
+.section-tipo h4 {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.tabla-tipo {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.tabla-tipo div {
+  font-weight: bold;
+  font-size: 13px;
+  padding-top: 5px;
+}
+
+.tabla-tipo input {
+  padding: 5px;
+  font-size: 13px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.section-semanal {
+  margin-top: 15px;
+}
+
+.section-semanal table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.section-semanal th,
+.section-semanal td {
+  border: 1px solid #333;
+  padding: 5px;
+  text-align: center;
+}
+
+.section-semanal input {
+  width: 100%;
+  padding: 4px;
+  font-size: 12px;
+  box-sizing: border-box;
+}
+
+.observaciones {
+  margin-top: 20px;
+}
+
+.observaciones label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.observaciones textarea {
+  width: 100%;
+  height: 80px;
+  padding: 6px;
+  font-size: 13px;
+  box-sizing: border-box;
+  resize: vertical;
+}
+
+footer {
+  position: absolute;
+  bottom: 15mm;
+  width: calc(100% - 40mm);
+  text-align: center;
+  font-size: 12px;
+  color: #666;
+}
+
+/* Botones */
+.button-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 30px;
+  flex-wrap: wrap;
+}
+
+#generate-pdf {
+  display: block;
+  margin: 30px auto 0;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#generate-pdf:hover {
+  background-color: #0551a1;
+}
+
+#logoutBtn {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#logoutBtn:hover {
+  background-color: #a71d2a;
+}
+
+/* Oculta el botón de generar PDF al imprimir */
+@media print {
+  #generate-pdf,
+  #logoutBtn {
+    display: none;
+  }
+}
+
+/* Responsive para pantallas pequeñas */
+@media (max-width: 768px) {
+  #work-order {
+    width: 100%;
+    padding: 15px;
+    border-radius: 0;
+    min-height: unset;
+  }
+
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Los div que tenían grid-column span 2 vuelven a 1 columna */
+  .form-grid > div[style*="grid-column: span 2;"] {
+    grid-column: auto !important;
+  }
+
+  .tabla-tipo {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .tabla-tipo div,
+  .tabla-tipo input {
+    width: 100%;
+  }
+
+  .tabla-tipo input {
+    margin-bottom: 10px;
+  }
+
+  .section-semanal table {
+    font-size: 12px;
+  }
+
+  .section-semanal th,
+  .section-semanal td {
+    padding: 3px;
+  }
+
+  #generate-pdf,
+  #logoutBtn {
+    width: 90%;
+    font-size: 14px;
+  }
+
+  footer {
+    position: static;
+    margin-top: 30px;
+    width: 100%;
+  }
+
+  .button-container {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+
+
+
+  
+
+  
+  
+  
